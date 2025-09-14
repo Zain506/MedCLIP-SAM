@@ -8,6 +8,6 @@
 
 We vectorised the DHN-NCE loss function using the following proof:
 
-![proof1](MedCLIP.png)
-![proof2](MedCLIP2.png)
-![proof3](MedCLIP3.png)
+![proof1](MedCLIP_SAM.png)
+![proof2](MedCLIP_SAM2.png)
+![proof3](MedCLIP_SAM3.png)
