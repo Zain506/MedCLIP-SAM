@@ -6,8 +6,4 @@
 
 ## 2. MedCLIP-SAM Model Fine Tuning
 
-We vectorised the DHN-NCE loss function using the following proof:
-
-![proof1](MedCLIP_SAM.png)
-![proof2](MedCLIP_SAM2.png)
-![proof3](MedCLIP_SAM3.png)
+We vectorised the DHN-NCE loss function to calculate it efficiently. This vectorisation has been uploaded with [proof](Proof.pdf)
