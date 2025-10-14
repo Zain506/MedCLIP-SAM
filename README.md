@@ -31,12 +31,30 @@ This project aims to:
 ##  How to run
 
 1. Clone the Repository
+```bash
+git clone https://github.com/Zain506/MedCLIP-SAM.git
+cd MedCLIP-SAM/
+```
 
 2. Create and activate a virtual environment
 
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
 3. Install dependencies
 
+```bash
+pip install -r requirements.txt
+```
+
 4. Run the code in notebooks
+
+```bash
+cd notebooks
+jupyter lab
+```
 
 ---
 
