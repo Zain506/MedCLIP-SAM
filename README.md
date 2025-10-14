@@ -28,6 +28,18 @@ This project aims to:
 
 ---
 
+## Notebooks Directory
+
+- The majority of the work is currently in the notebooks directory
+- Here I am implementing both stages of the research paper:
+	1. Fine-tuning pre-existing BiomedCLIP
+	2. Saliency Map generation on images
+- The first notebook generates the pretrained weights that the second notebook imports
+- Each notebook can be run on Google Drive, and has code blocks aimed at exporting and importing to Google Drive
+- If run locally, you will need to download the weights and then run the block which imports them under the same file name
+
+---
+
 ##  How to run
 
 1. Clone the Repository

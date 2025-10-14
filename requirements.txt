@@ -1,3 +1,6 @@
 transformers
 torch
 python-dotenv
+open-clip-torch
+datasets
+tqdm
