@@ -1,0 +1,28 @@
+[project]
+name = "MedCLIP-SAM"
+version = "0.0.1"
+description = "Implementing MedCLIP-SAM pipeline"
+authors = [{ name = "Zain", "email" = "nomani.zain@gmail.com"}]
+requires-python = ">=3.10"
+dependencies = [
+    "transformers>=4.57.1",
+]
+
+[project.optional-dependencies]
+dev = [
+	"ruff",
+	"black",
+	"pre-commit",
+	"pytest",
+	"nbstripout"
+]
+
+[tool.ruff]
+line-length = 88
+target-version = ["py310"]
+select = ["E", "F", "B"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
