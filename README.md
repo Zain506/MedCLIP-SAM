@@ -12,7 +12,9 @@ Create and activate a virtual environment using uv
 uv sync
 ```
 
-If developing, use ```bash
+If developing, use 
+
+```bash
 uv sync --all-extras
 ```
 
