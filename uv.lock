@@ -1413,45 +1413,45 @@ version = "0.0.1"
 source = { virtual = "." }
 dependencies = [
     { name = "datasets" },
-    { name = "open-clip-torch" },
     { name = "python-dotenv" },
-    { name = "torch" },
-    { name = "tqdm" },
     { name = "transformers" },
 ]
 
 [package.optional-dependencies]
 dev = [
     { name = "black" },
+    { name = "jupyterlab" },
+    { name = "jupyterlab-vim" },
     { name = "mypy" },
     { name = "nbstripout" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "ruff" },
 ]
-notebooks = [
-    { name = "jupyterlab" },
-    { name = "jupyterlab-vim" },
+training = [
+    { name = "open-clip-torch" },
+    { name = "torch" },
+    { name = "tqdm" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "black", marker = "extra == 'dev'" },
     { name = "datasets" },
-    { name = "jupyterlab", marker = "extra == 'notebooks'" },
-    { name = "jupyterlab-vim", marker = "extra == 'notebooks'" },
+    { name = "jupyterlab", marker = "extra == 'dev'" },
+    { name = "jupyterlab-vim", marker = "extra == 'dev'" },
     { name = "mypy", marker = "extra == 'dev'" },
     { name = "nbstripout", marker = "extra == 'dev'" },
-    { name = "open-clip-torch" },
+    { name = "open-clip-torch", marker = "extra == 'training'" },
     { name = "pre-commit", marker = "extra == 'dev'" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "python-dotenv" },
     { name = "ruff", marker = "extra == 'dev'" },
-    { name = "torch" },
-    { name = "tqdm" },
+    { name = "torch", marker = "extra == 'training'" },
+    { name = "tqdm", marker = "extra == 'training'" },
     { name = "transformers" },
 ]
-provides-extras = ["dev", "notebooks"]
+provides-extras = ["dev", "training"]
 
 [[package]]
 name = "mistune"

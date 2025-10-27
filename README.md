@@ -15,6 +15,12 @@ uv sync
 If developing, use 
 
 ```bash
+uv sync --extra dev
+```
+
+And if developing with local GPU (not Colab or Kaggle) use
+
+```bash
 uv sync --all-extras
 ```
 

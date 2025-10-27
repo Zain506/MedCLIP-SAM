@@ -4,22 +4,10 @@ version = "0.0.1"
 description = "Implementing MedCLIP-SAM pipeline"
 authors = [{ name = "Zain", "email" = "nomani.zain@gmail.com"}]
 requires-python = ">=3.10"
-dependencies = [
-	"transformers",
-	"python-dotenv",
-	"datasets",
-]
+dependencies = ["transformers","python-dotenv","datasets"]
 
 [project.optional-dependencies]
-dev = [
-	"ruff",
-	"black",
-	"pre-commit",
-	"pytest",
-	"nbstripout",
-	"mypy"
-]
-notebooks = ["jupyterlab", "jupyterlab_vim"]
+dev = ["ruff","black","pre-commit","pytest","nbstripout","mypy", "jupyterlab", "jupyterlab_vim"]
 training = ["open-clip-torch", "torch", "tqdm"]
 
 [tool.ruff]
