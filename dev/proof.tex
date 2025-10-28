@@ -1,0 +1,91 @@
+\documentclass[a4paper,12pt]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}   % Handle UTF-8 characters
+\usepackage{amsmath, amssymb} % Math symbols and environments
+\usepackage{graphicx}         % Include images
+\usepackage{hyperref}         % Clickable links
+\usepackage{geometry}         % Adjust page margins
+\geometry{margin=1in}
+
+% --- Document info ---
+\title{Vectorising the DHN-NCE loss function}
+\author{Zain Nomani}
+\date{\today}
+
+% --- Begin document ---
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document summarizes my process of reconstructing and analyzing the loss function proposed in a healthcare AI research paper. 
+The goal is to understand the underlying implementation, benchmark performance, and identify potential improvements.
+\end{abstract}
+\subsection{Loss Function}
+The loss function was defined as:
+\[
+	\mathcal L = \mathcal L ^{v \to t} + \mathcal L ^{t \to v} \\
+\]
+\[
+	\mathcal L ^{v \to t} = - \sum ^B _{i=1} \frac {I_{pi}^TT_{pi}}{\tau} + \sum ^B _{i=1} \log \sum _{j \ne i} \exp(\frac {I_{pi}^TT_{pj}}{\tau}) \mathcal W _{I_{pi}T_{pj}} ^{v \to t}
+\]
+\[
+	\mathcal W = (B-1) \frac {\exp( \frac {\beta _1 I_{pi}^TT_{pj}}{\tau})} { \sum _{k \ne i} \exp(\frac {\beta _1 I_{pi}^TT_{pk}}{\tau})}
+\]
+
+And vice versa for $L^{t \to v}$
+
+Since the weight matrix $W$'s leading diagonal ($i=j$) is not included in the second summation, we can manually set it to $-1$.
+This will combine the 2 summations into 1, which we can begin to vectorise.
+
+\[
+	\mathcal L ^{v \to t} = \sum ^B _{i=1} \log \sum ^B _{j=1} \exp(\frac {I_{pi}^TT_{pj}}{\tau}) \mathcal W _{I_{pi}T_{pj}}^{v\to t}
+\]
+Where $\mathcal W _{ii} = -1 \space \forall i$. We can set this manually.
+
+Let $S_{ij} = \frac {I_{pi}^TT_{pj}}{\tau} \quad$ where $I \in \mathbb R ^{B \times n}, \space T \in \mathbb R ^{B \times n}$ are the batch matrices of each image and text vector row-by-row.
+
+So $S = \frac 1 \tau IT^T \in \mathbb R ^{B\times B}$ is a similarity matrix.
+
+We normalise $I$ and $T$ to prevent gradient blow-up.
+
+Next we define $A=\exp(S)$ element-wise.
+
+So
+$$
+	\mathcal L^{v\to t} = \sum ^B _{i=1} \log \sum ^B _{j=1} A \mathcal W
+$$
+after setting $\text{diag}(\mathcal W) = -1$
+
+Note that in order to calculate $\mathcal L ^{t\to v}$ we require $T_{pi}^TS_{pj}$, which is just $S^T$.
+
+$$
+	\mathcal W = (B-1) \frac {A_{ij}^{\beta _1}}{\sum _{k \ne i} A_{ij} ^{\beta _1}} = (B-1) \frac {e^{\beta _1 S_{ij}}}{\sum _{k \ne i} e^{\beta _1 S_{ik}}}
+$$
+
+
+We can define $X=\beta _1 S$ element-wise and set $X_{ii}=-\infty$
+
+Then $\mathcal W^{v \to t} = (B-1) \cdot \text{softmax}(X, \dim = -1)$ computationally
+
+We would transpose $X$ to find $\mathcal W^{t \to v}$
+
+So our final vectorised algorithm looks like:
+
+\begin{enumerate}
+
+	\item Calculate $S = \frac 1 \tau IT^T$
+ 	\item Calculate $A = \exp (S)$ element-wise
+ 	\item Calculate $X = \beta _1 S$ and then set the leading diagonal to $-\infty$
+	\item Calculate $\mathcal W = (B-1) \cdot \text{softmax} (X, \dim = -1)$
+ 	\item Set the leading diagonal of $\mathcal W$ to $-1$
+ 	\item $\mathcal L^{v\to t} = \sum (\log (\sum (A * \mathcal W)))$
+ 	\item Calculate $\mathcal L ^{t\to v}$ by repeating steps 4-6 with $X^T$ (to apply softmax to the other axis)
+
+\[
+	\mathcal L = \mathcal L^{t \to v} + \mathcal L^{v \to t}
+\]
+\end{enumerate}
+\end{document}
+
