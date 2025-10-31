@@ -32,3 +32,27 @@
 - The CLS token is a dummy token which aggregates all other tokens with the attention mechanism.
 - The final attention layer's CLS token is the input to the fully connected layer at the end
 - Potentially leverage the CLS token
+
+
+**Solution**
+
+1. Obtain final layer CLS token
+2. Apply mask over image patch-wise and obtain each CLS token
+3. Return mask which maximises CLS token similarity
+
+- This is a very brute-force method which iterates over several possibilities.
+- There should be a way to choose from a list of masks (similar to how convolutional mappings are used in regular gScoreCAM)
+
+
+**Statistics**
+
+- Statistics in consideration are IOU, DSC and AUC (referenced in stat_test_methods.md)
+- Looking at the statistics and metrics (**Table 3**) from MedCLIP-SAM paper, the segmentation accuracy of the proposed method exceeds the fully supervised ResUNet (CNN) for both breast ultrasounds and brain MRIs.
+- ResUNet seems to be almost perfect for Lung X-rays, and the proposed method seems pretty far off.
+
+- **Table 2** from MedCLIP-SAM indicates that in all instances, the proposed, fine-tuned pipeline always exceeds the pretrained BiomedCLIP model, and that gScoreCAM in every single instance exceeds the performance of GradCAM by a significant margin
+
+
+- Even though the original gScoreCAM talks about how bad ViT architectures are compared to CNN architectures when using this method, when applied to a fine-tuned biomedclip model, the Vision Transformer exceeds ResUNet (CNN) in segmenting breast ultrasounds and brain MRIs.
+- gScoreCAM paper evaluates each architecture on regular images
+- Possibly the difference in the type of image (medical) leads to the ViT architecture performing better than CNNs
