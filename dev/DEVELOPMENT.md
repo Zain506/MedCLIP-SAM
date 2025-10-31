@@ -17,3 +17,18 @@
 2. Use the attention maps of the vision transformer
 
 - We will test both approaches and benchmark.
+
+
+# 31/10/2025
+
+- ViT only generates attention maps between 16x16 patches (equivalent of the tokenisation step)
+- We cannot identify saliency maps from here
+- Directly augmenting the bounding boxes would be very vanilla: Worth benchmarking
+- Original gScoreCAM pipeline augments the original image by each convolutional mapping (hadamaard product)
+- Need to find alternative method
+
+**CLS Token**
+
+- The CLS token is a dummy token which aggregates all other tokens with the attention mechanism.
+- The final attention layer's CLS token is the input to the fully connected layer at the end
+- Potentially leverage the CLS token
